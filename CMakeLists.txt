@@ -26,7 +26,4 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR} include)
 
 # Look in the Lesson0 subdirectory to find its CMakeLists.txt so we can build the executable
-add_subdirectory(Lesson0)
-add_subdirectory(Lesson0.1)
-add_subdirectory(Lesson1)
-add_subdirectory(Lesson2)
+add_subdirectory(src)
