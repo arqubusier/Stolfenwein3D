@@ -4,7 +4,8 @@ project(Stolfenwein3D)
 # Use our modified FindSDL2* modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${Stolfenwein3D_SOURCE_DIR}/cmake")
 # Set an output directory for our binaries
-set(BIN_DIR ${Stolfenwein3D_SOURCE_DIR}/bin)
+#set(BIN_DIR ${Stolfenwein3D_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${Stolfenwein3D_SOURCE_DIR}/bin)
 
 # Bump up warning levels appropriately for clang, gcc & msvc
 # Also set debug/optimization flags depending on the build type. IDE users choose this when
