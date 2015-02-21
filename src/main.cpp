@@ -1,8 +1,8 @@
 #include <iostream>
 
 using namespace std;
-void main()
+int main()
 {
 	cout << "herro\n";
-	system("PAUSE");
+    return 0;
 }
