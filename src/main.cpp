@@ -25,6 +25,8 @@ const color WALL_COLOR = {224, 224, 224};
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+//Functions
+void CalcDeltaPos(vector2d inputMove, float heading);
 void logSDLError(std::ostream &os, const std::string &msg);
 void renderColumn(SDL_Renderer *ren, int x, const int center, const int height,
         const color column_color);
@@ -70,28 +72,28 @@ int main()
 
 
 
-
-
 	vector2d inputMove;
 
-	//Main loop flag 
-	bool quit = false; 
 	//Event handler 
-	SDL_Event e;
+	SDL_Event event;
+
+	//Main loop flag 
+	bool quit = false;
 	while (!quit)
 	{
+		//Reset every loop
 		inputMove.x = 0;
 		inputMove.y = 0;
 
-		while (SDL_PollEvent(&e) != 0)
+		while (SDL_PollEvent(&event) != 0)
 		{
 			//User requests quit
-			if (e.type == SDL_QUIT)
+			if (event.type == SDL_QUIT)
 				quit = true;
 
-			else if (e.type == SDL_KEYDOWN)
+			else if (event.type == SDL_KEYDOWN)
 			{
-				switch (e.key.keysym.scancode)
+				switch (event.key.keysym.scancode)
 				{
 				case SDL_SCANCODE_W:
 					inputMove.y++;
