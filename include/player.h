@@ -1,5 +1,5 @@
-#ifndef VECTOR2D_H
-#define VECTOR2D_H
+#ifndef PLAYER2D_H
+#define PLAYER2D_H
 
 #include "vector2d.h"
 class player
