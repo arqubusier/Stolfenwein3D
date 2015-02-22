@@ -10,26 +10,22 @@
 
 using namespace std;
 
-typedef unsigned char byte;
-struct color{
-    byte r;
-    byte g;
-    byte b;
-};
-
-typedef struct color color;
-
-const color BACKGROUND_COLOR = {64, 64, 64};
-const color WALL_COLOR = {224, 224, 224};
-
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+
+const int HORIZON = SCREEN_HEIGHT/2;
+const SDL_Color ROOF_COLOR = {64, 64, 64, 255};
+const SDL_Color FLOOR_COLOR = {100, 100, 100, 255};
+const SDL_Color WALL_COLOR = {224, 224, 224, 255};
+
 
 //Functions
 void CalcDeltaPos(vector2d inputMove, float heading);
 void logSDLError(std::ostream &os, const std::string &msg);
-void renderColumn(SDL_Renderer *ren, int x, const int center, const int height,
-        const color column_color);
+void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
+        const SDL_Color column_color);
+void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof,
+        const SDL_Color floor);
 
 int main()
 {
@@ -61,17 +57,15 @@ int main()
 	}
 
     //Graphics
-    SDL_SetRenderDrawColor(ren, 64, 64, 64, 255);
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
-
+    renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
     renderColumn(ren, 10, 240, 100, WALL_COLOR);
     renderColumn(ren, 20, 240, 50, WALL_COLOR);
     renderColumn(ren, 30, 25, 50, WALL_COLOR);
-     
     SDL_RenderPresent(ren);
 
-
-
+    //input
 	vector2d inputMove;
 
 	//Event handler 
@@ -130,11 +124,24 @@ void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
 }
 
-void renderColumn(SDL_Renderer *ren, int x, const int center, const int height,
-        const color column_color){
+void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
+        const SDL_Color column_color){
     SDL_SetRenderDrawColor(ren, column_color.r, column_color.g,
             column_color.b, 255);
-    SDL_RenderDrawLine(ren, x, center + height/2, x, center - height/2);
+    SDL_RenderDrawLine(ren, x, horizon + height/2, x, horizon - height/2);
+}
+
+void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof, const SDL_Color floor){
+    //Render roof
+    SDL_SetRenderDrawColor(ren, roof.r, roof.g, roof.b, roof.a);
+    SDL_Rect area = {0, 0, SCREEN_WIDTH, horizon};
+    SDL_RenderFillRect(ren, &area);
+    
+    //Render floor
+    SDL_SetRenderDrawColor(ren, floor.r, floor.g, floor.b, floor.a);
+    area.y = horizon;
+    area.h = SCREEN_HEIGHT - horizon;
+    SDL_RenderFillRect(ren, &area);
 }
 
 void CalcDeltaPos(vector2d inputMove, float heading)
