@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "cleanup.h"
 
+//Needed for visual studio linker to work
 #undef main
 
 using namespace std;
@@ -10,30 +11,13 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 void logSDLError(std::ostream &os, const std::string &msg);
-int init_graphics(SDL_Window *win, SDL_Renderer *ren);
 
 int main()
 {
+    //init
     SDL_Window *win = nullptr;
     SDL_Renderer *ren = nullptr;
-    init_graphics(win, ren);
-	SDL_Quit();
-    return 0;
-}
 
-/**
-* Log an SDL error with some error message to the output stream of our choice
-* @param os The output stream to write the message to
-* @param msg The error message to write, format will be msg error: SDL_GetError()
-*/
-void logSDLError(std::ostream &os, const std::string &msg){
-	os << msg << " error: " << SDL_GetError() << std::endl;
-}
-
-/**
- * Creates a window and a renderer
- */
-int init_graphics(SDL_Window *win, SDL_Renderer *ren){
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
         logSDLError(std::cout, "SDL_Init");
 	    return 1;
@@ -56,6 +40,27 @@ int init_graphics(SDL_Window *win, SDL_Renderer *ren){
     	SDL_Quit();
     	return 1;
     }
-    
+
+    //Graphics
+    SDL_SetRenderDrawColor(ren, 64, 64, 64, 255);
+    SDL_RenderClear(ren);
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+    SDL_RenderDrawLine(ren, 10, 10, 100, 100);
+    SDL_RenderPresent(ren);
+
+    SDL_Delay(2000);
+
+    //cleanup
+    cleanup(win, ren);
+	SDL_Quit();
     return 0;
+}
+
+/**
+* Log an SDL error with some error message to the output stream of our choice
+* @param os The output stream to write the message to
+* @param msg The error message to write, format will be msg error: SDL_GetError()
+*/
+void logSDLError(std::ostream &os, const std::string &msg){
+	os << msg << " error: " << SDL_GetError() << std::endl;
 }
