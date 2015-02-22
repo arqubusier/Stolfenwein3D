@@ -7,6 +7,7 @@
 
 #include "vector2d.h"
 #include "cleanup.h"
+#include "player.h"
 
 using namespace std;
 
@@ -111,6 +112,9 @@ int main()
 					break;
 				case SDL_SCANCODE_RIGHT:
 					break;
+				case SDL_SCANCODE_ESCAPE:
+					quit = true;
+					break;
 				}
 			}
 		}
@@ -151,4 +155,8 @@ void CalcDeltaPos(vector2d inputMove, float heading)
 	deltaPos.x = cos(heading) * speedFactor;
 	deltaPos.y = sin(heading) * speedFactor;
 
+}
+void RayTracer()
+{
+	
 }
