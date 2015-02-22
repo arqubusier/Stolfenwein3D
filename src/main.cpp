@@ -105,6 +105,10 @@ int main()
 				case SDL_SCANCODE_D:
 					inputMove.x++;
 					break;
+				case SDL_SCANCODE_LEFT:
+					break;
+				case SDL_SCANCODE_RIGHT:
+					break;
 				}
 			}
 		}
