@@ -7,10 +7,24 @@
 
 using namespace std;
 
+typedef unsigned char byte;
+struct color{
+    byte r;
+    byte g;
+    byte b;
+};
+
+typedef struct color color;
+
+const color BACKGROUND_COLOR = {64, 64, 64};
+const color WALL_COLOR = {224, 224, 224};
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 void logSDLError(std::ostream &os, const std::string &msg);
+void renderColumn(SDL_Renderer *ren, int x, const int center, const int height,
+        const color column_color);
 
 int main()
 {
@@ -44,8 +58,11 @@ int main()
     //Graphics
     SDL_SetRenderDrawColor(ren, 64, 64, 64, 255);
     SDL_RenderClear(ren);
-    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-    SDL_RenderDrawLine(ren, 10, 10, 100, 100);
+
+    renderColumn(ren, 10, 240, 100, WALL_COLOR);
+    renderColumn(ren, 20, 240, 50, WALL_COLOR);
+    renderColumn(ren, 30, 25, 50, WALL_COLOR);
+     
     SDL_RenderPresent(ren);
 
     SDL_Delay(2000);
@@ -63,4 +80,11 @@ int main()
 */
 void logSDLError(std::ostream &os, const std::string &msg){
 	os << msg << " error: " << SDL_GetError() << std::endl;
+}
+
+void renderColumn(SDL_Renderer *ren, int x, const int center, const int height,
+        const color column_color){
+    SDL_SetRenderDrawColor(ren, column_color.r, column_color.g,
+            column_color.b, 255);
+    SDL_RenderDrawLine(ren, x, center + height/2, x, center - height/2);
 }
