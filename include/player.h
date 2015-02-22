@@ -1,16 +1,16 @@
-#ifndef PLAYER2D_H
-#define PLAYER2D_H
+#ifndef Player2D_H
+#define Player2D_H
 
-#include "vector2d.h"
-class player
+#include "Vector2d.h"
+class Player
 {
 public:
-	player(float x, float y, float heading);
-	~player();
-	vector2d position;
+	Player(float x, float y, float heading);
+	~Player();
+	Vector2d position;
 	float heading;
 private:
-	player();
+	Player();
 
 };
 

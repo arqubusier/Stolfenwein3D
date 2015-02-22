@@ -1,12 +1,15 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef Map_H
+#define Map_H
+#include "Vector2d.h"
 
-class map
+class Map
 {
 public:
-	map();
-	~map();
-	bool grid[100][100];
+	Map();
+	~Map();
+	static const int MaxX = 100, MaxY = 100;
+
+	static bool grid[MaxX][MaxY];
 private:
 };
 #endif

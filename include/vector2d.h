@@ -1,11 +1,11 @@
-#ifndef VECTOR2D_H
-#define VECTOR2D_H
-class vector2d
+#ifndef Vector2d_H
+#define Vector2d_H
+class Vector2d
 {
 public:
-	vector2d();
-	vector2d(float x, float y);
-	~vector2d();
+	Vector2d();
+	Vector2d(float x, float y);
+	~Vector2d();
 	float& x, y;
 private:
 	float component[2];

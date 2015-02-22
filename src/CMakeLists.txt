@@ -1,6 +1,5 @@
 project(src)
-set(SOURCES main.cpp player.cpp vector2d.cpp)
-add_executable(src main.cpp vector2d.cpp ../include/vector2d.h player.cpp ../include/player.h)
-add_executable(src map.cpp ../indlude/map.h)
+set(SOURCES main.cpp Player.cpp Vector2d.cpp)
+add_executable(src main.cpp Vector2d.cpp ../include/Vector2d.h Player.cpp ../include/Player.h Map.cpp ../indlude/Map.h)
 target_link_libraries(src ${SDL2_LIBRARY})
 install(TARGETS src RUNTIME DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

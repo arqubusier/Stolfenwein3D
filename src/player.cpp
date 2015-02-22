@@ -1,17 +1,17 @@
-#include "player.h"
+#include "Player.h"
 
 
-player::player()
+Player::Player()
 {
 
 }
 
-player::player(float x, float y, float heading = 0)
+Player::Player(float x, float y, float heading = 0)
 {
 	position.x = x;
 	position.y = y;
 }
 
-player::~player()
+Player::~Player()
 {
 }

@@ -1,13 +1,13 @@
-#include "vector2d.h"
+#include "Vector2d.h"
 
 
-vector2d::vector2d()
+Vector2d::Vector2d()
 : x(component[0]), y(component[1])
 {
 	component[0] = 0;
 	component[1] = 0;
 }
-vector2d::vector2d(float x, float y)
+Vector2d::Vector2d(float x, float y)
 : x(component[0]), y(component[1])
 {
 	component[0] = x;
@@ -15,6 +15,6 @@ vector2d::vector2d(float x, float y)
 }
 
 
-vector2d::~vector2d()
+Vector2d::~Vector2d()
 {
 }
