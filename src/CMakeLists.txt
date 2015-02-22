@@ -1,5 +1,5 @@
 project(src)
 set(SOURCES main.cpp player.cpp vector2d.cpp)
-add_executable(src main.cpp vector2d.cpp ../include/vector2d.h)
+add_executable(src main.cpp vector2d.cpp ../include/vector2d.h player.cpp ../include/player.h)
 target_link_libraries(src ${SDL2_LIBRARY})
 install(TARGETS src RUNTIME DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
