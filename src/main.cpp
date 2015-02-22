@@ -28,6 +28,8 @@ void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
 void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof,
         const SDL_Color floor);
 
+
+
 int main()
 {
     //init
