@@ -1,10 +1,12 @@
 #include <iostream>
 #include <SDL.h>
-#include "cleanup.h"
+#include <string>
 
 //Needed for visual studio linker to work
 #undef main
+
 #include "vector2d.h"
+#include "cleanup.h"
 
 using namespace std;
 
