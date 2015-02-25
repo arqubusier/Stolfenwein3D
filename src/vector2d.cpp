@@ -10,11 +10,24 @@ Vector2d::Vector2d()
 Vector2d::Vector2d(float x, float y)
 : x(component[0]), y(component[1])
 {
-	component[0] = x;
-	component[1] = y;
+	this->x = x;
+	this->y = y;
 }
 
 
 Vector2d::~Vector2d()
 {
+}
+
+Vector2d operator+(const Vector2d &v1, const Vector2d &v2)
+{
+	return Vector2d(v1.x + v2.x, v1.y + v2.y);
+}
+Vector2d operator-(const Vector2d &v1, const Vector2d &v2)
+{
+	return Vector2d(v1.x - v2.x, v1.y - v2.y);
+}
+Vector2d Vector2d::operator=(const Vector2d &v)
+{
+	return Vector2d(v.x, v.y);
 }

@@ -8,6 +8,7 @@
 #include "Vector2d.h"
 #include "cleanup.h"
 #include "Player.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -27,6 +28,9 @@ void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
         const SDL_Color column_color);
 void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof,
         const SDL_Color floor);
+float mod(float x, float m);
+void RayTracer(Vector2d start, float angle);
+
 
 
 
@@ -73,6 +77,10 @@ int main()
 
 	//Event handler 
 	SDL_Event event;
+
+	//Map
+	Map map;
+	Vector2d test = map.RayTracer({ 10.84f, 0}, 1.10714872 + (M_PI / 2));
 
 	//Main loop flag 
 	bool quit = false;
@@ -165,7 +173,4 @@ void CalcDeltaPos(Vector2d inputMove, float heading)
 	deltaPos.y = sin(heading) * speedFactor;
 
 }
-void RayTracer()
-{
-	
-}
+
