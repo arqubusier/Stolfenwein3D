@@ -3,16 +3,19 @@
 
 Map::Map()
 {
+	bitMapMap = SDL_LoadBMP("map.bmp");
+	if (SDL_MUSTLOCK(bitMapMap))
+		SDL_LockSurface(bitMapMap);
+
 	//Fill grid with zeroes
 	for (int x = 0; x < MaxX; ++x)
 	{
 		for (int y = 0; y < MaxY; ++y)
 		{
-			grid[x][y] = 0;
+			grid[y][x] = !GetPixel8(bitMapMap, x, y);
 		}
 	}
-
-	grid[1][4] = 1;
+	int stop(0);
 }
 
 Map::~Map()
@@ -93,4 +96,14 @@ Vector2d Map::RayTracer(Vector2d start, float angle)
 float Map::mod(float x, float m)
 {
 	return fmod((fmod(x, m) + m), m);
+}
+
+
+Uint8 Map::GetPixel8(SDL_Surface* surface, int x, int y)
+{
+	//Convert the pixels to 32 bit
+	Uint8* pixels = (Uint8*)surface->pixels;
+
+	//Get the requested pixel
+	return pixels[(y * surface->w) + x];
 }

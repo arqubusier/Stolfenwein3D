@@ -75,6 +75,9 @@ int main()
     //input
 	Vector2d inputMove;
 
+	//test2->pixels[];
+	
+
 	//Event handler 
 	SDL_Event event;
 
