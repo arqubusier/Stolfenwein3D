@@ -71,6 +71,8 @@ int main()
     renderColumn(ren, 20, 240, 50, WALL_COLOR);
     renderColumn(ren, 30, 25, 50, WALL_COLOR);
     SDL_RenderPresent(ren);
+	float fov = 70;
+	float degreesPerPixel = fov / SCREEN_WIDTH;
 
     //input
 	Vector2d inputMove;
@@ -81,7 +83,11 @@ int main()
 
 	//Map
 	Map map;
-	Vector2d test = map.RayTracer({ 10.84f, 0}, 1.10714872 + (M_PI / 2));
+	float dist;
+	Vector2d test = map.RayTracer({ 10.84f, 0}, 1.10714872 + (M_PI / 2), dist);
+	
+	//Player
+	Player player(4, 4, 0);
 
 	//Main loop flag 
 	bool quit = false;
@@ -122,6 +128,11 @@ int main()
 					break;
 				}
 			}
+		}
+
+		for (int column = 0; column < SCREEN_WIDTH; column++)
+		{
+			
 		}
 	}
 	//cleanup

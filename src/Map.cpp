@@ -23,7 +23,7 @@ Map::~Map()
 
 }
 
-Vector2d Map::RayTracer(Vector2d start, float angle)
+Vector2d Map::RayTracer(Vector2d start, float angle, float& dist)
 {
 	int x = (int)start.x, y = (int)start.y;
 
@@ -91,14 +91,13 @@ Vector2d Map::RayTracer(Vector2d start, float angle)
 	}
 
     //Distance to first wall hit
-    float dist;
     if (tMax.x < tMax.y)
     {
         dist = tMax.x;
     }
     else
     {
-        dist = tMax.x;
+        dist = tMax.y;
     }
 	return Vector2d(x, y);
 }
