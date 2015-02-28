@@ -21,7 +21,7 @@ Vector2d::~Vector2d()
 
 Vector2d operator+(const Vector2d &v1, const Vector2d &v2)
 {
-	return Vector2d(v1.x + v2.x, v1.y + v2.y);
+	return Vector2d(v1.x + v2.x, v1.y + v2.y); 
 }
 Vector2d operator-(const Vector2d &v1, const Vector2d &v2)
 {

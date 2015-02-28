@@ -74,8 +74,6 @@ int main()
 
     //input
 	Vector2d inputMove;
-
-	//test2->pixels[];
 	
 
 	//Event handler 
