@@ -174,4 +174,3 @@ void CalcDeltaPos(Vector2d inputMove, float heading)
 	deltaPos.y = sin(heading) * speedFactor;
 
 }
-

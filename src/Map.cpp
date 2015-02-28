@@ -69,7 +69,6 @@ Vector2d Map::RayTracer(Vector2d start, float angle)
 
 
 
-
 	while 
 	(
 		0 <= x && 
@@ -90,6 +89,17 @@ Vector2d Map::RayTracer(Vector2d start, float angle)
 			y += stepY;
 		}
 	}
+
+    //Distance to first wall hit
+    float dist;
+    if (tMax.x < tMax.y)
+    {
+        dist = tMax.x;
+    }
+    else
+    {
+        dist = tMax.x;
+    }
 	return Vector2d(x, y);
 }
 
