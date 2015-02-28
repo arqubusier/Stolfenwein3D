@@ -5,9 +5,10 @@
 //Needed for visual studio linker to work
 #undef main
 
-#include "vector2d.h"
+#include "Vector2d.h"
 #include "cleanup.h"
-#include "player.h"
+#include "Player.h"
+#include "Map.h"
 
 using namespace std;
 
@@ -21,12 +22,15 @@ const SDL_Color WALL_COLOR = {224, 224, 224, 255};
 
 
 //Functions
-void CalcDeltaPos(vector2d inputMove, float heading);
+void CalcDeltaPos(Vector2d inputMove, float heading);
 void logSDLError(std::ostream &os, const std::string &msg);
 void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
         const SDL_Color column_color);
 void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof,
         const SDL_Color floor);
+float mod(float x, float m);
+void RayTracer(Vector2d start, float angle);
+
 
 
 
@@ -69,10 +73,17 @@ int main()
     SDL_RenderPresent(ren);
 
     //input
-	vector2d inputMove;
+	Vector2d inputMove;
+
+	//test2->pixels[];
+	
 
 	//Event handler 
 	SDL_Event event;
+
+	//Map
+	Map map;
+	Vector2d test = map.RayTracer({ 10.84f, 0}, 1.10714872 + (M_PI / 2));
 
 	//Main loop flag 
 	bool quit = false;
@@ -150,9 +161,9 @@ void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof
     SDL_RenderFillRect(ren, &area);
 }
 
-void CalcDeltaPos(vector2d inputMove, float heading)
+void CalcDeltaPos(Vector2d inputMove, float heading)
 {
-	vector2d deltaPos;
+	Vector2d deltaPos;
 	float direction = atan(inputMove.y / inputMove.x);
 
 	heading += direction;
@@ -164,8 +175,4 @@ void CalcDeltaPos(vector2d inputMove, float heading)
 	deltaPos.x = cos(heading) * speedFactor;
 	deltaPos.y = sin(heading) * speedFactor;
 
-}
-void RayTracer()
-{
-	
 }
