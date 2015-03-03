@@ -31,3 +31,9 @@ Vector2d Vector2d::operator=(const Vector2d &v)
 {
 	return Vector2d(v.x, v.y);
 }
+Vector2d::Vector2d(const Vector2d& vSource)
+: x(component[0]), y(component[1])
+{
+	this->x = vSource.x;
+	this->y = vSource.y;
+}
