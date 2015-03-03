@@ -88,7 +88,6 @@ int main()
 	bool quit = false;
 	while (!quit)
 	{
-		renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
 		//Reset every loop
 		inputMove.x = 0;
 		inputMove.y = 0;
@@ -128,13 +127,16 @@ int main()
 			}
 		}
 
-		float rayAngle = player.heading -(fov / 2);
+		//Render scene
+		renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
+
+		float rayAngle = -(fov / 2);
 		for (int column = 0; column < SCREEN_WIDTH; column++)
 		{
 			rayAngle += radiansPerPixel;
 
 			Vector2d hitPos; // <--Optional
-			float dist = map.RayTracer(player.position, rayAngle, hitPos);
+			float dist = 2 * map.RayTracer(player.position, player.heading + rayAngle, hitPos) / cos(rayAngle);
 
 			renderColumn(ren, column, HORIZON, dist, WALL_COLOR);
 			
