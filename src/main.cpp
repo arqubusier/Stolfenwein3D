@@ -66,10 +66,7 @@ int main()
     //Graphics
     SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
     SDL_RenderClear(ren);
-    renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
-    renderColumn(ren, 10, 240, 100, WALL_COLOR);
-    renderColumn(ren, 20, 240, 50, WALL_COLOR);
-    renderColumn(ren, 30, 25, 50, WALL_COLOR);
+
     SDL_RenderPresent(ren);
 	float fov = degreesToRadians(70);
 	float radiansPerPixel = fov / SCREEN_WIDTH;
@@ -131,16 +128,16 @@ int main()
 			}
 		}
 
-		float angle = -(fov / 2);
+		float rayAngle = player.heading -(fov / 2);
 		for (int column = 0; column < SCREEN_WIDTH; column++)
 		{
-			angle += radiansPerPixel;
+			rayAngle += radiansPerPixel;
 
-			Vector2d hitPos;
-			float dist = map.RayTracer(player.position, player.heading + angle, hitPos);
+			Vector2d hitPos; // <--Optional
+			float dist = map.RayTracer(player.position, rayAngle, hitPos);
 
-			renderColumn(ren, column, HORIZON, dist, SDL_Color{ 255, 255, 255, 50 });
-
+			renderColumn(ren, column, HORIZON, dist, WALL_COLOR);
+			
 		}
 
 
