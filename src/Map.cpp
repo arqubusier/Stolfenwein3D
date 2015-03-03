@@ -23,11 +23,11 @@ Map::~Map()
 
 }
 
-Vector2d Map::RayTracer(Vector2d start, float angle, float& dist)
+float Map::RayTracer(Vector2d start, float angle, Vector2d& hitPos)
 {
 	int x = (int)start.x, y = (int)start.y;
 
-	angle = mod(angle, 2*M_PI);
+	angle = mod(angle, float(2*M_PI));
 
 	int stepX(0), stepY(0);
 
@@ -90,16 +90,19 @@ Vector2d Map::RayTracer(Vector2d start, float angle, float& dist)
 		}
 	}
 
+	hitPos = { float(x), float(y) };
+
     //Distance to first wall hit
     if (tMax.x < tMax.y)
     {
-        dist = tMax.x;
+        return tMax.x;
     }
     else
     {
-        dist = tMax.y;
+        return tMax.y;
     }
-	return Vector2d(x, y);
+
+
 }
 
 float Map::mod(float x, float m)

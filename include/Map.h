@@ -16,7 +16,7 @@ public:
 	SDL_Surface* bitMapMap;
 	bool grid[MaxX][MaxY];
 
-	Vector2d RayTracer(Vector2d start, float angle, float& dist);
+	float RayTracer(Vector2d start, float angle, Vector2d& hitPos);
 private:
 	float mod(float x, float m);
 	Uint8 GetPixel8(SDL_Surface* surface, int x, int y);
