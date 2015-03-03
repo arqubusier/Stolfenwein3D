@@ -29,7 +29,7 @@ void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
 void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof,
         const SDL_Color floor);
 float mod(float x, float m);
-void RayTracer(Vector2d start, float angle);
+float degreesToRadians(float angle);
 
 
 
@@ -71,8 +71,8 @@ int main()
     renderColumn(ren, 20, 240, 50, WALL_COLOR);
     renderColumn(ren, 30, 25, 50, WALL_COLOR);
     SDL_RenderPresent(ren);
-	float fov = 70;
-	float degreesPerPixel = fov / SCREEN_WIDTH;
+	float fov = degreesToRadians(70);
+	float radiansPerPixel = fov / SCREEN_WIDTH;
 
     //input
 	Vector2d inputMove;
@@ -83,16 +83,15 @@ int main()
 
 	//Map
 	Map map;
-	float dist;
-	Vector2d test = map.RayTracer({ 10.84f, 0}, 1.10714872 + (M_PI / 2), dist);
 	
 	//Player
-	Player player(4, 4, 0);
+	Player player(4, 4, degreesToRadians(45));
 
 	//Main loop flag 
 	bool quit = false;
 	while (!quit)
 	{
+		renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
 		//Reset every loop
 		inputMove.x = 0;
 		inputMove.y = 0;
@@ -120,8 +119,10 @@ int main()
 					inputMove.x++;
 					break;
 				case SDL_SCANCODE_LEFT:
+					player.heading -= 0.02f;
 					break;
 				case SDL_SCANCODE_RIGHT:
+					player.heading += 0.02f;
 					break;
 				case SDL_SCANCODE_ESCAPE:
 					quit = true;
@@ -130,10 +131,20 @@ int main()
 			}
 		}
 
+		float angle = -(fov / 2);
 		for (int column = 0; column < SCREEN_WIDTH; column++)
 		{
-			
+			angle += radiansPerPixel;
+
+			Vector2d hitPos;
+			float dist = map.RayTracer(player.position, player.heading + angle, hitPos);
+
+			renderColumn(ren, column, HORIZON, dist, SDL_Color{ 255, 255, 255, 50 });
+
 		}
+
+
+		SDL_RenderPresent(ren);
 	}
 	//cleanup
 	cleanup(win, ren);
@@ -184,4 +195,8 @@ void CalcDeltaPos(Vector2d inputMove, float heading)
 	deltaPos.x = cos(heading) * speedFactor;
 	deltaPos.y = sin(heading) * speedFactor;
 
+}
+float degreesToRadians(float angle)
+{
+	return (angle * M_PI) / 180;
 }
