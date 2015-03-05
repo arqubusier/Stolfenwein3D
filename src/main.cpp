@@ -16,13 +16,13 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 const int HORIZON = SCREEN_HEIGHT/2;
-const SDL_Color ROOF_COLOR = {64, 64, 64, 255};
-const SDL_Color FLOOR_COLOR = {100, 100, 100, 255};
+const SDL_Color FLOOR_COLOR = { 64, 64, 64, 255 };
+const SDL_Color ROOF_COLOR = { 100, 100, 100, 255 };
 const SDL_Color WALL_COLOR = {224, 224, 224, 255};
 
 
 //Functions
-void CalcDeltaPos(Vector2d inputMove, float heading);
+Vector2d CalcDeltaPos(Vector2d inputMove, float heading);
 void logSDLError(std::ostream &os, const std::string &msg);
 void renderColumn(SDL_Renderer *ren, int x, const int horizon, const int height,
         const SDL_Color column_color);
@@ -36,42 +36,42 @@ float degreesToRadians(float angle);
 
 int main()
 {
-    //init
-    SDL_Window *win = nullptr;
-    SDL_Renderer *ren = nullptr;
+	//init
+	SDL_Window *win = nullptr;
+	SDL_Renderer *ren = nullptr;
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0){
-        logSDLError(std::cout, "SDL_Init");
-	    return 1;
-    }
-
-    win = SDL_CreateWindow("Stolfenwein3D", 100, 100, SCREEN_WIDTH,
-            SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-    if (win == nullptr){
-        logSDLError(std::cout, "CreateWindow");
-    	SDL_Quit();
-    	return 1;
-    }
-
-    ren = SDL_CreateRenderer(win, -1,
-            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (ren == nullptr){
-        logSDLError(std::cout, "CreateRenderer");
-    	cleanup(win);
-    	SDL_Quit();
+	if (SDL_Init(SDL_INIT_VIDEO) != 0){
+		logSDLError(std::cout, "SDL_Init");
 		return 1;
 	}
 
-    //Graphics
-    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
-    SDL_RenderClear(ren);
+	win = SDL_CreateWindow("Stolfenwein3D", 100, 100, SCREEN_WIDTH,
+		SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
-    SDL_RenderPresent(ren);
+	if (win == nullptr){
+		logSDLError(std::cout, "CreateWindow");
+		SDL_Quit();
+		return 1;
+	}
+
+	ren = SDL_CreateRenderer(win, -1,
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (ren == nullptr){
+		logSDLError(std::cout, "CreateRenderer");
+		cleanup(win);
+		SDL_Quit();
+		return 1;
+	}
+
+	//Graphics
+	SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+	SDL_RenderClear(ren);
+
+	SDL_RenderPresent(ren);
 	float fov = degreesToRadians(70);
 	float radiansPerPixel = fov / SCREEN_WIDTH;
 
-    //input
+	//input
 	Vector2d inputMove;
 	
 
@@ -82,7 +82,8 @@ int main()
 	Map map;
 	
 	//Player
-	Player player(4, 4, degreesToRadians(45));
+	Player player(20.5, 20.5, 5.44539404);
+		//degreesToRadians(45));
 
 	//Main loop flag 
 	bool quit = false;
@@ -103,16 +104,16 @@ int main()
 				switch (event.key.keysym.scancode)
 				{
 				case SDL_SCANCODE_W:
-					inputMove.y++;
+					inputMove.x++;
 					break;
 				case SDL_SCANCODE_A:
-					inputMove.x--;
-					break;
-				case SDL_SCANCODE_S:
 					inputMove.y--;
 					break;
+				case SDL_SCANCODE_S:
+					inputMove.x--;
+					break;
 				case SDL_SCANCODE_D:
-					inputMove.x++;
+					inputMove.y++;
 					break;
 				case SDL_SCANCODE_LEFT:
 					player.heading -= 0.02f;
@@ -127,6 +128,13 @@ int main()
 			}
 		}
 
+		//player.position =  CalcDeltaPos(inputMove, player.heading); FIX ME!!
+		Vector2d test = CalcDeltaPos(inputMove, player.heading);
+		player.position.x += test.x;
+		player.position.y += test.y;
+
+		printf("%f\n", player.position.x);
+
 		//Render scene
 		renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
 
@@ -136,14 +144,14 @@ int main()
 			rayAngle += radiansPerPixel;
 
 			Vector2d hitPos; // <--Optional
-			float dist = 2 * map.RayTracer(player.position, player.heading + rayAngle, hitPos) / cos(rayAngle);
+			float dist = map.RayTracer(player.position, player.heading + rayAngle, hitPos);
+			float wallHeight = 400 / (dist);// / cos(rayAngle));
+			renderColumn(ren, column, HORIZON, wallHeight, WALL_COLOR);
 
-			renderColumn(ren, column, HORIZON, dist, WALL_COLOR);
-			
 		}
-
-
 		SDL_RenderPresent(ren);
+
+
 	}
 	//cleanup
 	cleanup(win, ren);
@@ -180,20 +188,33 @@ void renderBackground(SDL_Renderer *ren, const int horizon, const SDL_Color roof
     SDL_RenderFillRect(ren, &area);
 }
 
-void CalcDeltaPos(Vector2d inputMove, float heading)
+Vector2d CalcDeltaPos(Vector2d inputMove, float heading)
 {
+
+	float direction;
+	if (inputMove.x == 0)
+	{
+		if (inputMove.y == 0)
+			direction = 0;
+		else if (inputMove.y < 0)
+			direction = degreesToRadians(-90);
+		else 
+			direction = degreesToRadians(90);
+	}
+	else
+		direction = atan(inputMove.y / inputMove.x) +(M_PI * (inputMove.x < 0));
+
 	Vector2d deltaPos;
-	float direction = atan(inputMove.y / inputMove.x);
 
 	heading += direction;
 
-	float speedFactor = sqrt(pow(inputMove.x, 2)*pow(inputMove.y, 2));
+	float speedFactor = sqrt(pow(inputMove.x, 2)+pow(inputMove.y, 2)) / 10;
 	if (speedFactor > 1)
 		speedFactor = 1;
 
 	deltaPos.x = cos(heading) * speedFactor;
 	deltaPos.y = sin(heading) * speedFactor;
-
+	return deltaPos;
 }
 float degreesToRadians(float angle)
 {

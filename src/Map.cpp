@@ -12,9 +12,16 @@ Map::Map()
 	{
 		for (int y = 0; y < MaxY; ++y)
 		{
-			grid[y][x] = !GetPixel8(bitMapMap, x, y);
+			//grid[y][x] = !GetPixel8(bitMapMap, x, y);
+			grid[x][y] = 0;
 		}
 	}
+
+	grid[19][19] = 1;
+	grid[19][21] = 1;
+	grid[21][19] = 1;
+	grid[21][21] = 1;
+
 	int stop(0);
 }
 
@@ -71,21 +78,23 @@ float Map::RayTracer(Vector2d start, float angle, Vector2d& hitPos)
 
 	while 
 	(
-		0 <= x && 
+		0 < x && 
 		x < MaxX && 
-		0 <= y && 
+		0 < y && 
 		y < MaxY && 
 		grid[x][y] == 0
 	)
 	{
 		if (tMax.x < tMax.y)
 		{
-			tMax.x += tDelta.x * stepX;
+			if (grid[x][y] == 0)
+				tMax.x += tDelta.x * stepX;
 			x += stepX;
 		}
 		else
 		{
-			tMax.y += tDelta.y * stepY;
+			if (grid[x][y] == 0)
+				tMax.y += tDelta.y * stepY;
 			y += stepY;
 		}
 	}
@@ -93,13 +102,21 @@ float Map::RayTracer(Vector2d start, float angle, Vector2d& hitPos)
 	hitPos = { float(x), float(y) };
 
     //Distance to first wall hit
-    if (tMax.x < tMax.y)
+    if (tMax.x > tMax.y)
     {
-        return tMax.x;
+		//if (stepX > 0)
+		//	return (x - start.x) / cos(angle);
+		//else 
+		//	return (x+1 - start.x) / cos(angle);
+		return tMax.x;
     }
     else
     {
-        return tMax.y;
+		return tMax.y;
+		//if (stepY > 0)
+		//	return (y - start.y) / sin(angle);
+		//else
+		//	return (y + 1 - start.y) / sin(angle);
     }
 
 
