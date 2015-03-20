@@ -145,8 +145,6 @@ void Map::drawMap(SDL_Renderer *ren, SDL_Window *win){
     }
     
     if (mapTexture != nullptr){
-        SDL_RenderClear(ren);
         SDL_RenderCopy(ren, mapTexture, NULL, NULL);
-        SDL_RenderPresent(ren);
     }
 }

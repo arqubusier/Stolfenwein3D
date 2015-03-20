@@ -161,7 +161,8 @@ int main()
 		SDL_RenderPresent(ren);
         
         map.drawMap(mapRen, mapWin);
-
+        player.draw(mapRen, mapWin);
+        SDL_RenderPresent(mapRen);
 	}
 	//cleanup
 	cleanup(win, ren);
