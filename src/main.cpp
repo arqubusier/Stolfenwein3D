@@ -146,6 +146,10 @@ int main()
 
 		//Render scene
 		renderBackground(ren, HORIZON, ROOF_COLOR, FLOOR_COLOR);
+        
+        //Render debug window
+        map.drawMap(mapRen, mapWin);
+        player.draw(mapRen, mapWin);
 
 		float rayAngle = -(fov / 2);
 		for (int column = 0; column < SCREEN_WIDTH; column++)
@@ -157,11 +161,10 @@ int main()
 			float wallHeight = 400 / (dist);// / cos(rayAngle));
 			renderColumn(ren, column, HORIZON, wallHeight, WALL_COLOR);
 
+            SDL_RenderDrawLine(mapRen, (int)player.position.x, (int)player.position.y, hitPos.x, hitPos.y);
+
 		}
 		SDL_RenderPresent(ren);
-        
-        map.drawMap(mapRen, mapWin);
-        player.draw(mapRen, mapWin);
         SDL_RenderPresent(mapRen);
 	}
 	//cleanup
