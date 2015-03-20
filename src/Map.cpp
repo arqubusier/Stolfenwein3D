@@ -1,28 +1,29 @@
 #include "Map.h"
 
-
+//Add cleanup for bmp surface and texture
 Map::Map()
+    :mapSurface(nullptr)
 {
-	bitMapMap = SDL_LoadBMP("map.bmp");
-	if (SDL_MUSTLOCK(bitMapMap))
-		SDL_LockSurface(bitMapMap);
+	mapSurface = SDL_LoadBMP("map.bmp");
+	if (SDL_MUSTLOCK(mapSurface))
+		SDL_LockSurface(mapSurface);
 
 	//Fill grid with zeroes
 	for (int x = 0; x < MaxX; ++x)
 	{
 		for (int y = 0; y < MaxY; ++y)
 		{
-			//grid[y][x] = !GetPixel8(bitMapMap, x, y);
+			//grid[y][x] = !GetPixel8(mapSurface, x, y);
 			grid[x][y] = 0;
 		}
 	}
 
+    /* for testing remove later
 	grid[19][19] = 1;
 	grid[19][21] = 1;
 	grid[21][19] = 1;
 	grid[21][21] = 1;
-
-	int stop(0);
+    */
 }
 
 Map::~Map()
@@ -135,4 +136,17 @@ Uint8 Map::GetPixel8(SDL_Surface* surface, int x, int y)
 
 	//Get the requested pixel
 	return pixels[(y * surface->w) + x];
+}
+
+
+void Map::drawMap(SDL_Renderer *ren, SDL_Window *win){
+    if (mapTexture == nullptr){
+        mapTexture = SDL_CreateTextureFromSurface(ren, mapSurface);
+    }
+    
+    if (mapTexture != nullptr){
+        SDL_RenderClear(ren);
+        SDL_RenderCopy(ren, mapTexture, NULL, NULL);
+        SDL_RenderPresent(ren);
+    }
 }

@@ -36,9 +36,14 @@ float degreesToRadians(float angle);
 
 int main()
 {
+	//Map
+	Map map;
+
 	//init
 	SDL_Window *win = nullptr;
 	SDL_Renderer *ren = nullptr;
+	SDL_Window *mapWin = nullptr;
+	SDL_Renderer *mapRen = nullptr;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
 		logSDLError(std::cout, "SDL_Init");
@@ -47,8 +52,10 @@ int main()
 
 	win = SDL_CreateWindow("Stolfenwein3D", 100, 100, SCREEN_WIDTH,
 		SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	mapWin = SDL_CreateWindow("Stolfenwein3D - debug", 100, 100, map.MaxY,
+		map.MaxY, SDL_WINDOW_SHOWN);
 
-	if (win == nullptr){
+	if (win == nullptr || mapWin == nullptr){
 		logSDLError(std::cout, "CreateWindow");
 		SDL_Quit();
 		return 1;
@@ -56,7 +63,9 @@ int main()
 
 	ren = SDL_CreateRenderer(win, -1,
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr){
+	mapRen = SDL_CreateRenderer(mapWin, -1,
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (ren == nullptr || mapRen == nullptr){
 		logSDLError(std::cout, "CreateRenderer");
 		cleanup(win);
 		SDL_Quit();
@@ -78,8 +87,6 @@ int main()
 	//Event handler 
 	SDL_Event event;
 
-	//Map
-	Map map;
 	
 	//Player
 	Player player(20.5, 20.5, 5.44539404);
@@ -124,6 +131,8 @@ int main()
 				case SDL_SCANCODE_ESCAPE:
 					quit = true;
 					break;
+                default:
+                    ; //added this to stop irritating warning messages
 				}
 			}
 		}
@@ -150,7 +159,8 @@ int main()
 
 		}
 		SDL_RenderPresent(ren);
-
+        
+        map.drawMap(mapRen, mapWin);
 
 	}
 	//cleanup
